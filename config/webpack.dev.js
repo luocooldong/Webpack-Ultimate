@@ -1,25 +1,22 @@
-const path = require("path");
-const webpack = require("webpack");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
+const path = require("path")
+const webpack = require("webpack")
+const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   entry: {
-    main: [
-      "./src/main.js"
-    ]
+    main: ["./src/main.js"]
   },
   mode: "development",
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "../dist"),
-    publicPath: "/",
+    publicPath: "/"
   },
   devServer: {
     contentBase: "dist",
     overlay: true,
-    hot: true,
     stats: {
-      colors: true,
+      colors: true
     }
   },
   devtool: "source-map",
@@ -27,12 +24,12 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "babel-loader"
           }
-        ],
-        exclude: /node_modules/
+        ]
       },
       {
         test: /\.css$/,
@@ -40,8 +37,17 @@ module.exports = {
           {
             loader: "style-loader"
           },
+          { loader: "css-loader" }
+        ]
+      },
+      {
+        test: /\.jpg$/,
+        use: [
           {
-            loader: "css-loader"
+            loader: "file-loader",
+            options: {
+              name: "images/[name].[ext]"
+            }
           }
         ]
       },
@@ -49,23 +55,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader",
-            options: {
-              attrs: [
-                "img:src"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(jpg|gif|png)$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "images/[name]-[hash:8].[ext]"
-            }
+            loader: "html-loader"
           }
         ]
       }
@@ -74,7 +64,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HTMLWebpackPlugin({
-      template: "./src/index.html",
+      template: "./src/index.html"
     })
   ]
 }
