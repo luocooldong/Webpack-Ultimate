@@ -4,7 +4,8 @@ const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   entry: {
-    main: ["./src/main.js"]
+    main: ["./src/main.js"],
+    ts: ["./src/index.ts"]
   },
   mode: "development",
   output: {
@@ -28,6 +29,15 @@ module.exports = {
         use: [
           {
             loader: "babel-loader"
+          }
+        ]
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "awesome-typescript-loader"
           }
         ]
       },
