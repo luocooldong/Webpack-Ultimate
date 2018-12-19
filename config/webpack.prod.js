@@ -5,7 +5,8 @@ const isProd = process.env.NODE_ENV === "production"
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 
-module.exports = {
+module.exports = env => {
+ return {
   entry: {
     main: ["./src/main.js"]
   },
@@ -68,11 +69,19 @@ module.exports = {
   plugins: [
     new OptimizeCssAssetsPlugin(),
     new MiniCSSExtractPlugin({
-      filename: "[name]-[contenthash].css"
+      filename: "[name].css"
     }),
     new HTMLWebpackPlugin({
       template: "./src/index.ejs",
       title: "Link's Journal"
-    })
+    }),
+    new webpack.DefinePlugin(
+      {
+        'process.env': {
+          'NODE_ENV': JSON.stringify(env.NODE_ENV)
+        }
+      }
+    )
   ]
+ }
 }
