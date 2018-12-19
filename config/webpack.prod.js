@@ -4,7 +4,10 @@ const HTMLWebpackPlugin = require("html-webpack-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const isProd = process.env.NODE_ENV === "production"
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
+const MinifyPlugin = require("babel-minify-webpack-plugin")
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
+const CompressionPlugin = require("compression-webpack-plugin")
+const BrotliPlugin = require("brotli-webpack-plugin")
 
 module.exports = {
   entry: {
@@ -73,6 +76,12 @@ module.exports = {
       title: "Link's Journal"
     }),
     // new MinifyPlugin(),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin(),
+    new CompressionPlugin(
+      {
+        algorithm: "gzip"
+      }
+    ),
+    new BrotliPlugin()
   ]
 }
