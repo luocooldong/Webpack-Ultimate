@@ -1,12 +1,12 @@
 const path = require("path")
 const webpack = require("webpack")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const isProd = process.env.NODE_ENV === "production"
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 
-module.exports = env => {
- return {
+module.exports = {
   entry: {
     main: ["./src/main.js"]
   },
@@ -15,13 +15,6 @@ module.exports = env => {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "../dist"),
     publicPath: "/"
-  },
-  devServer: {
-    contentBase: "dist",
-    overlay: true,
-    stats: {
-      colors: true
-    }
   },
   module: {
     rules: [
@@ -41,7 +34,10 @@ module.exports = env => {
             loader: MiniCSSExtractPlugin.loader
           },
           {
-            loader: "css-loader"
+            loader: "css-loader",
+            options: {
+              minimize: true
+            }
           }
         ]
       },
@@ -55,33 +51,28 @@ module.exports = env => {
             }
           }
         ]
-      },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader"
-          }
-        ]
       }
     ]
   },
   plugins: [
-    new OptimizeCssAssetsPlugin(),
-    new MiniCSSExtractPlugin({
-      filename: "[name].css"
+    new MiniCSSExtractPlugin(),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require("cssnano"),
+      cssProcessorOptions: { discardComments: { removeAll: true } },
+      canPrint: true
+    }),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
     }),
     new HTMLWebpackPlugin({
       template: "./src/index.ejs",
+      inject: true,
       title: "Link's Journal"
     }),
-    new webpack.DefinePlugin(
-      {
-        'process.env': {
-          'NODE_ENV': JSON.stringify(env.NODE_ENV)
-        }
-      }
-    )
+    // new MinifyPlugin(),
+    new UglifyJSPlugin()
   ]
- }
 }
