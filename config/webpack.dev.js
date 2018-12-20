@@ -26,6 +26,11 @@ module.exports = {
     }
   },
   devtool: "source-map",
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   module: {
     rules: [
       {
@@ -56,6 +61,14 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "markdown-with-front-matter-loader"
+          }
+        ]
       }
     ]
   },
@@ -71,6 +84,5 @@ module.exports = {
       inject: true,
       title: "Link's Journal"
     })
-  ],
-  performance: { hints: false }
+  ]
 }

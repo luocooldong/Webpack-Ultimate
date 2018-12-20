@@ -6,9 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config=config/webpack.dev.js",
-    "build": "BABEL_ENV=production webpack --config=config/webpack.prod.js --env.NODE_ENV=production ",
+    "build": "BABEL_ENV=production webpack --config=config/webpack.prod.js --env.NODE_ENV=production",
     "build:dev": "webpack --config=config/webpack.dev.js",
-    "dev": "nodemon --inspect --watch src/server --watch config src/server/main.js",
+    "dev": "NODE_ENV=development nodemon --inspect --watch src/server --watch config src/server/main.js --env.NODE_ENV=development",
     "prod": "NODE_ENV=production node src/server/main.js"
   },
   "keywords": [],
@@ -33,6 +33,8 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "markdown-loader": "^4.0.0",
+    "markdown-with-front-matter-loader": "^0.1.0",
     "mini-css-extract-plugin": "^0.4.1",
     "optimize-css-assets-webpack-plugin": "^4.0.3",
     "react": "^16.2.0",
