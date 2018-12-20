@@ -10,6 +10,8 @@ import configDevServer from "../../config/webpack.dev-server.js"
 import configProdClient from "../../config/webpack.prod-client.js"
 import configProdServer from "../../config/webpack.prod-server.js"
 
+const isProd = process.env.NODE_ENV === "production"
+const isDev = !isProd
 const PORT = process.env.PORT || 8080
 let isBuilt = false
 
@@ -25,8 +27,6 @@ const done = () => {
     })
 }
 
-const isProd = process.env.NODE_ENV === "production"
-const isDev = !isProd
 if (isDev) {
   const compiler = webpack([configDevClient, configDevServer])
 
@@ -47,16 +47,17 @@ if (isDev) {
   server.use(webpackHotMiddlware)
   server.use(webpackHotServerMiddleware(compiler))
   console.log("Middleware enabled")
-  compiler.plugin("done", done)
+  done()
 } else {
   webpack([configProdClient, configProdServer]).run((err, stats) => {
+    const clientStats = stats.toJson().children[0]
     const render = require("../../build/prod-server-bundle.js").default
     server.use(
       expressStaticGzip("dist", {
         enableBrotli: true
       })
     )
-    server.use("*", render())
+    server.use(render({ clientStats }))
     done()
   })
 }
