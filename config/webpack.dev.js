@@ -4,9 +4,15 @@ const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   entry: {
-    main: ["webpack-hot-middleware/client?reload=true", "./src/main.js"]
+    main: [
+      "react-hot-loader/patch",
+      "babel-runtime/regenerator",
+      "babel-register",
+      "webpack-hot-middleware/client?reload=true",
+      "./src/main.js"
+    ]
   },
-  mode: "development",
+  mode: "production",
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "../dist"),
@@ -19,6 +25,7 @@ module.exports = {
       colors: true
     }
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -36,9 +43,7 @@ module.exports = {
           {
             loader: "style-loader"
           },
-          {
-            loader: "css-loader"
-          }
+          { loader: "css-loader" }
         ]
       },
       {
@@ -66,5 +71,6 @@ module.exports = {
       inject: true,
       title: "Link's Journal"
     })
-  ]
+  ],
+  performance: { hints: false }
 }
