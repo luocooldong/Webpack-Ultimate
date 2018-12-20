@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import AppRoot from "./components/AppRoot"
 import { AppContainer } from "react-hot-loader"
 import Data from "../data/bio"
+import _ from 'loader'
 
 function render(Component) {
   ReactDOM.render(

@@ -17,14 +17,14 @@ body {
   flex-flow: column;
 }
 
-.profile > img {
+img {
   border-radius: 100%;
   border: 5px;
   width: 300px;
   box-shadow: 0 0 20px black;
 }
 
-.profile > h1 {
+h1 {
   font-size: 5em;
   font-family: sans-serif;
   color: white;

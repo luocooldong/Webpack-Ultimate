@@ -10,13 +10,26 @@ const BrotliPlugin = require("brotli-webpack-plugin")
 module.exports = env => {
   return {
     entry: {
-      main: ["./src/main.js"]
+      main: ["./src/main.js"],
+      other: ["./src/main.js"]
     },
     mode: "production",
     output: {
       filename: "[name]-bundle.js",
       path: path.resolve(__dirname, "../dist"),
       publicPath: "/"
+    },
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+        cacheGroups: {
+          vendor: {
+            name: "vendor",
+            chunks: "initial",
+            minChunks: 2
+          }
+        }
+      }
     },
     module: {
       rules: [

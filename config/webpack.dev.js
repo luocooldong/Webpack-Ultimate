@@ -1,10 +1,18 @@
 const path = require("path")
 const webpack = require("webpack")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 
 module.exports = {
   entry: {
     main: [
+      "react-hot-loader/patch",
+      "babel-runtime/regenerator",
+      "babel-register",
+      "webpack-hot-middleware/client?reload=true",
+      "./src/main.js"
+    ],
+    other: [
       "react-hot-loader/patch",
       "babel-runtime/regenerator",
       "babel-register",
@@ -26,6 +34,18 @@ module.exports = {
     }
   },
   devtool: "source-map",
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          name: "vendor",
+          chunks: "initial",
+          minChunks: 2
+        }
+      }
+    }
+  },
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
@@ -83,6 +103,9 @@ module.exports = {
       template: "./src/index.ejs",
       inject: true,
       title: "Link's Journal"
+    }),
+    new BundleAnalyzerPlugin({
+      generateStatsFile: true
     })
   ]
 }
