@@ -1,7 +1,7 @@
 import React from "react"
 
 const getBundle = () => {
-  import(/* webpackChunkName: "lodash" */ "lodash").then(_ => {
+  import("lodash").then(_ => {
     console.log("imported", _)
   })
 }
