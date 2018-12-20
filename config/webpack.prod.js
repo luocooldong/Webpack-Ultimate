@@ -1,17 +1,18 @@
 const path = require("path")
 const webpack = require("webpack")
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 const CompressionPlugin = require("compression-webpack-plugin")
 const BrotliPlugin = require("brotli-webpack-plugin")
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = env => {
   return {
     entry: {
-      main: ["./src/main.js"],
-      other: ["./src/main.js"]
+      vendor: ["react", "react-dom"],
+      main: ["./src/main.js"]
     },
     mode: "production",
     output: {
@@ -21,7 +22,6 @@ module.exports = env => {
     },
     optimization: {
       splitChunks: {
-        chunks: "all",
         cacheGroups: {
           vendor: {
             name: "vendor",
@@ -44,15 +44,7 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          use: [
-            { loader: MiniCSSExtractPlugin.loader },
-            {
-              loader: "css-loader",
-              options: {
-                minimize: true
-              }
-            }
-          ]
+          use: [MiniCSSExtractPlugin.loader, "css-loader"]
         },
         {
           test: /\.jpg$/,
@@ -68,7 +60,6 @@ module.exports = env => {
         {
           test: /\.md$/,
           use: [
-            
             {
               loader: "markdown-with-front-matter-loader"
             }

@@ -1,18 +1,13 @@
 const path = require("path")
 const webpack = require("webpack")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin
 
 module.exports = {
   entry: {
+    vendor: ["react"],
     main: [
-      "react-hot-loader/patch",
-      "babel-runtime/regenerator",
-      "babel-register",
-      "webpack-hot-middleware/client?reload=true",
-      "./src/main.js"
-    ],
-    other: [
       "react-hot-loader/patch",
       "babel-runtime/regenerator",
       "babel-register",
@@ -20,7 +15,7 @@ module.exports = {
       "./src/main.js"
     ]
   },
-  mode: "production",
+  mode: "development",
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "../dist"),
@@ -34,23 +29,6 @@ module.exports = {
     }
   },
   devtool: "source-map",
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendor: {
-          name: "vendor",
-          chunks: "initial",
-          minChunks: 2
-        }
-      }
-    }
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000
-  },
   module: {
     rules: [
       {
@@ -98,14 +76,11 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify("development")
       }
-    }),
-    new HTMLWebpackPlugin({
-      template: "./src/index.ejs",
-      inject: true,
-      title: "Link's Journal"
-    }),
-    new BundleAnalyzerPlugin({
-      generateStatsFile: true
     })
+    // new HTMLWebpackPlugin({
+    //   template: "./src/index.ejs",
+    //   inject: true,
+    //   title: "Link's Journal"
+    // })
   ]
 }
