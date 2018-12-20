@@ -7,9 +7,11 @@
   "scripts": {
     "start": "webpack-dev-server --config=config/webpack.dev.js",
     "build": "BABEL_ENV=production webpack --config=config/webpack.prod.js --env.NODE_ENV=production",
-    "build:dev": "webpack --config=config/webpack.dev.js",
-    "dev": "NODE_ENV=development nodemon --inspect --watch src/server --watch config src/server/main.js --env.NODE_ENV=development",
-    "prod": "NODE_ENV=production node src/server/main.js"
+    "build:dev-server": "BABEL_ENV=development webpack --config=config/webpack.server.js --env.NODE_ENV=development",
+    "build:server": "BABEL_ENV=production webpack --config=config/webpack.server.js --env.NODE_ENV=production --watch",
+    "prod": "NODE_ENV=production node build/server-bundle.js",
+    "dev": "NODE_ENV=development nodemon --watch build --inspect build/server-bundle.js",
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
   "author": "",
@@ -50,6 +52,8 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.10",
-    "webpack-hot-middleware": "^2.24.3"
+    "webpack-hot-middleware": "^2.24.3",
+    "webpack-mild-compile": "^3.3.1",
+    "webpack-node-externals": "^1.7.2"
   }
 }
