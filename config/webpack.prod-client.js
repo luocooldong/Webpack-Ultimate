@@ -1,15 +1,15 @@
 const path = require("path")
 const webpack = require("webpack")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 const CompressionPlugin = require("compression-webpack-plugin")
 const BrotliPlugin = require("brotli-webpack-plugin")
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = env => {
   return {
+    name: "client",
     entry: {
       vendor: ["react", "react-dom"],
       main: ["./src/main.js"]
@@ -22,12 +22,12 @@ module.exports = env => {
     },
     optimization: {
       splitChunks: {
-        automaticNameDelimiter: "_",
+        automaticNameDelimiter: "-",
         cacheGroups: {
           vendor: {
             name: "vendor",
-            test: /[\\/]node_modules[\\/]/,
             chunks: "initial",
+            test: /[\\/]node_modules[\\/]/,
             minChunks: 2
           }
         }
@@ -52,7 +52,7 @@ module.exports = env => {
           test: /\.jpg$/,
           use: [
             {
-              loader: "file-loader",
+              loader: "url-loader",
               options: {
                 name: "images/[name].[ext]"
               }
@@ -79,15 +79,9 @@ module.exports = env => {
       }),
       new webpack.DefinePlugin({
         "process.env": {
-          NODE_ENV: JSON.stringify(env.NODE_ENV)
+          NODE_ENV: JSON.stringify(env.NODE_ENV),
+          WEBPACK: true
         }
-      }),
-      new HTMLWebpackPlugin({
-        template: "./src/index.ejs",
-        filename: "index.html",
-        inject: true,
-        title: "Link's Journal",
-        chunks: ["vendor", "main"]
       }),
       new UglifyJSPlugin(),
       new CompressionPlugin({

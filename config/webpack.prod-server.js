@@ -4,12 +4,13 @@ var nodeExternals = require("webpack-node-externals")
 
 module.exports = env => {
   return {
+    name: "server",
     target: "node",
     externals: nodeExternals(),
     entry: {
       server: ["./src/server/main.js"]
     },
-    mode: "development",
+    mode: "production",
     output: {
       filename: "[name]-bundle.js",
       path: path.resolve(__dirname, "../build")
@@ -27,9 +28,7 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          use: {
-            loader: "css-loader"
-          }
+          use: "css-loader"
         },
         {
           test: /\.jpg$/,

@@ -3,6 +3,7 @@ const webpack = require("webpack")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
+  name: "client",
   entry: {
     vendor: ["react", "react-dom"],
     main: [
@@ -92,7 +93,7 @@ module.exports = {
         WEBPACK: true
       }
     }),
-    new webpack.HotModuleReplacementPlugin(), // Enable HMR
+    new webpack.HotModuleReplacementPlugin(),
     new HTMLWebpackPlugin({
       template: "./src/index.ejs",
       inject: true,
